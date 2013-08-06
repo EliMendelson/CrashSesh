@@ -115,18 +115,19 @@ function timeElapsed() {
         <h1 align="center"><?=$topic?></h1>
         <h2 align="center"><?=$description?></h2>
 
-        <ol id="update" class="timeline">
+        <ol id="update" class="timeline"></ol>
+
         <script type="text/javascript" src="jquery.js"></script>
         <script type="text/javascript" >
             function refresh(){
-                $(#)
+                $("ol#update").load("posts.php", function(){
+                        setTimeout(refresh(), 1000);
+                });
             }
             if ((currentTime() != 0) && (timeElapsed() <= 20)) {
                 $(document).ready(function(){refresh()});
-                setInterval(function() { <?php refresh($idNum, $dbhandle); ?> }, 1000);
             }
         </script>
-        </ol>
 
         <div id="flash"></div>
         <div id="startButton"></div>
