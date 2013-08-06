@@ -51,7 +51,7 @@
     
     $topic = getTopic($idNum, $dbhandle);
     $description = getDescription($idNum, $dbhandle);
-    $time = NULL;
+    $time = 0;
     $timeSince = 0;
     
     /*
@@ -95,59 +95,107 @@
     
     
 ?>
+
+
+<script type="text/javascript" >
+function currentTime() {
+    return <?= $time ?>;
+}
+function timeElapsed() {
+    return <?= $timeSince ?>;
+}
+</script>
+
+
 <html>
-    <head>
-        <title><?=$topic?></title>
-    </head>
-    <body>
-        <h1 align="center"><?=$topic?></h1>
-        <h2 align="center"><?=$description?></h2>
+<head>
+<title><?=$topic?></title>
+</head>
+<body>
+<h1 align="center"><?=$topic?></h1>
+<h2 align="center"><?=$description?></h2>
 
-    <ol id="update" class="timeline">
-    <?php
+<ol id="update" class="timeline">
+<?php
     $result = $dbhandle -> query("SELECT Post FROM Posts" . $idNum . ";");
-
+    
     function refresh() {
         while($row=$result->fetchArray())
         {
             $post=$row['Post'];
-    ?>
-            <li class="box">
-            <?php echo $post; ?></li>
-            <?php
-        }
             ?>
-            </ol>
-        <?php if (($time != NULL) || ($timeSince <= 20)) { ?>
-            <script type="text/javascript" src="jquery.js"></script>
-            <script type="text/javascript" >
-            setTimeout(function() { <?php refresh(); ?> }, 1000);
-            </script>
-        <?php }
-    } ?>
-
-    <div id="flash"></div>
-    <div id="startButton"></div>
+<li class="box">
+<?php echo $post; ?></li>
 <?php
-    if (($time != NULL) && ($timeSince <= 20)) {
-        echo "<div >";
+    }
+    ?>
+</ol>
 
-        echo "<form action=\"#\" method=\"post\">";
-        echo "<textarea id=\"comment\"></textarea><br />";
-        echo "<input type=\"submit\" class=\"submit\" value=\" Submit Comment \" />";
-        echo "</form>";
-        echo "</div>";
-        
-        echo '<script type="text/javascript" src="jquery.js"></script>        <script type="text/javascript" >        $(function() {        function redirect() {            alert("Comment");        }        var timer = setTimeout("redirect()", 20000);        $(".submit").click(function()                           {                           var comment = $("#comment").val();                           var dataString = \'comment=\' + comment;                           if(comment==\'\')                           {                           alert(\'Please Give Valid Details\');                           }                           else                           {                           $("#flash").show();                           $.ajax({                                  type: "POST",                                  url: "newpostajax.php",                                  data: dataString,                                  cache: false,                                  success: function(html){                                  $("ol#update").append(html);                                  $("ol#update li:last").fadeIn("slow");                                  $("#flash").hide();                                  }                                  });                           }return false;                           }); });    </script>';
-        
-    } elseif ($time == NULL) { ?>
-        //echo "<button onclick=\"startTime()\">Start Session</button>";
-        <script type="text/javascript" src="jquery.js"></script>
-        <script type="text/javascript" >
-            $("startButton").append('<input type="button" value="Start Session">').button().click(function(){<?php startTime($id, $dbhandle, $time); ?>});
-        </script>
-<?php    }
-?>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" >
+if ((currentTime() != 0) && (timeElapsed() <= 20)) {
+    setTimeout(function() { <?php refresh(); ?> }, 1000);
+}
+</script>
 
-    </body>
+<div id="flash"></div>
+<div class="startButton"></div>
+
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" >
+if ((currentTime() != 0) && (timeElapsed() <= 20)) {
+    </script>
+    <div >
+    
+    <form action="#" method="post">
+    <textarea id="comment"></textarea><br />
+    <input type="submit" class="submit" value=" Submit Comment " />
+    </form>
+    </div>
+    
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" >
+    $(function() {
+      function redirect() {
+      //window.location = "results.php"
+      alert("Comment");
+      }
+      var timer = setTimeout("redirect()", 20000);
+      $(".submit").click(function()
+                         {
+                         var comment = $("#comment").val();
+                         var dataString = 'comment=' + comment;
+                         if(comment=='')
+                         {
+                         alert('Please Give Valid Details');
+                         }
+                         else
+                         {
+                         $("#flash").show();
+                         $.ajax({
+                                type: "POST",
+                                url: "newpostajax.php",
+                                data: dataString,
+                                cache: false,
+                                success: function(html){
+                                $("ol#update").append(html);
+                                $("ol#update li:last").fadeIn("slow");
+                                $("#flash").hide();
+                                }
+                                });
+                         }return false;
+                         //clearTimeout(timer);
+                         //timer = setTimeout('redirect()', 20000);
+                         }); });
+    
+} elseif (currentTime() == 0) {
+    //<button onclick=\"startTime()\">Start Session</button>
+    //    $("startButton").append('<input type="button" value="Start Session">').button().click(function(){<?php startTime($id, $dbhandle, $time); ?>});
+    //$.ajax({
+    //    $(".startButton").append("<input type=\"button\" value=\"Start Session\">");
+    //})
+}
+</script>
+
+</body>
 </html>
