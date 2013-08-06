@@ -108,60 +108,49 @@ function timeElapsed() {
 
 
 <html>
-<head>
-<title><?=$topic?></title>
-</head>
-<body>
-<h1 align="center"><?=$topic?></h1>
-<h2 align="center"><?=$description?></h2>
+    <head>
+        <title><?=$topic?></title>
+    </head>
+    <body>
+        <h1 align="center"><?=$topic?></h1>
+        <h2 align="center"><?=$description?></h2>
 
-<ol id="update" class="timeline">
-<?php
-    $result = $dbhandle -> query("SELECT Post FROM Posts" . $idNum . ";");
+        <ol id="update" class="timeline">
+        <script type="text/javascript" src="jquery.js"></script>
+        <script type="text/javascript" >
+            function refresh(){
+                $(#)
+            }
+            if ((currentTime() != 0) && (timeElapsed() <= 20)) {
+                $(document).ready(function(){refresh()});
+                setInterval(function() { <?php refresh($idNum, $dbhandle); ?> }, 1000);
+            }
+        </script>
+        </ol>
+
+        <div id="flash"></div>
+        <div id="startButton"></div>
+
+        <script type="text/javascript" src="jquery.js"></script>
+        <script type="text/javascript" >
+            if ((currentTime() != 0) && (timeElapsed() <= 20)) {
+        </script>
+        <div >
     
-    function refresh() {
-        while($row=$result->fetchArray())
-        {
-            $post=$row['Post'];
-            ?>
-<li class="box">
-<?php echo $post; ?></li>
-<?php
-    }
-    ?>
-</ol>
-
-<script type="text/javascript" src="jquery.js"></script>
-<script type="text/javascript" >
-if ((currentTime() != 0) && (timeElapsed() <= 20)) {
-    setTimeout(function() { <?php refresh(); ?> }, 1000);
-}
-</script>
-
-<div id="flash"></div>
-<div class="startButton"></div>
-
-<script type="text/javascript" src="jquery.js"></script>
-<script type="text/javascript" >
-if ((currentTime() != 0) && (timeElapsed() <= 20)) {
-    </script>
-    <div >
+            <form action="#" method="post">
+                <textarea id="comment"></textarea><br />
+                <input type="submit" class="submit" value=" Submit Comment " />
+            </form>
+        </div>
     
-    <form action="#" method="post">
-    <textarea id="comment"></textarea><br />
-    <input type="submit" class="submit" value=" Submit Comment " />
-    </form>
-    </div>
-    
-    <script type="text/javascript" src="jquery.js"></script>
-    <script type="text/javascript" >
-    $(function() {
-      function redirect() {
-      //window.location = "results.php"
-      alert("Comment");
-      }
-      var timer = setTimeout("redirect()", 20000);
-      $(".submit").click(function()
+        <script type="text/javascript" src="jquery.js"></script>
+        <script type="text/javascript" >
+            $(function() {
+              function redirect() {
+                alert("Comment");
+              }
+              var timer = setTimeout("redirect()", 20000);
+              $(".submit").click(function()
                          {
                          var comment = $("#comment").val();
                          var dataString = 'comment=' + comment;
@@ -188,14 +177,12 @@ if ((currentTime() != 0) && (timeElapsed() <= 20)) {
                          //timer = setTimeout('redirect()', 20000);
                          }); });
     
-} elseif (currentTime() == 0) {
-    //<button onclick=\"startTime()\">Start Session</button>
-    //    $("startButton").append('<input type="button" value="Start Session">').button().click(function(){<?php startTime($id, $dbhandle, $time); ?>});
-    //$.ajax({
-    //    $(".startButton").append("<input type=\"button\" value=\"Start Session\">");
-    //})
-}
-</script>
+            } elseif (currentTime() == 0) {
+                
+                $("#startButton").append('<input type="button" value="Start Session">').button().click(function(){<?php setTime($idNum, $dbhandle); ?>});
+                <?php $time = getTime($idNum, $dbhandle); ?>
+            }
+        </script>
 
-</body>
+    </body>
 </html>
