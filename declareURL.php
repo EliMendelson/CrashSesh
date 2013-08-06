@@ -86,8 +86,10 @@
     function sqlGen($id, $topic, $description, $dbhandle) {
         $postTable = "CREATE TABLE Posts" . $id . "(Post Text);";
         $saveSesh = "INSERT INTO CrashSesh(Id, Topic, Description) VALUES (\"" . $id . "\", \"" . $topic . "\", \"" . $description . "\");";
+        $setTime = "INSERT INTO TimeLeft(Id, Time) VALUES (\"" . $id . "\", NULL);";
         $dbhandle -> exec($postTable);
         $dbhandle -> exec($saveSesh);
+        $dbhandle -> exec($setTime);
     }
 
     function pgName($id) {

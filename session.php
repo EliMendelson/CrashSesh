@@ -30,9 +30,29 @@
         }
         return $description;
     }
+    function getTime($id, $dbhandle) {
+        $getTime = "SELECT Time FROM timeLeft WHERE Id=\"" . $id . "\";";
+        $result = $dbhandle -> query($getTime);
+        while ($row = $result->fetchArray()) {
+            $time = $row[0];
+        }
+        return $time;
+    }
+    
+    function setTime($id, $dbhandle) {
+        $setTime = "INSERT INTO TimeLeft(Id, Time) VALUES (\"" . $id . "\", " . time() . ");";
+        $dbhandle -> exec($setTime);
+    }
+    
+    function timeDiff($time) {
+        $timeDiff = time() - $time;
+        return $timeDiff;
+    }
     
     $topic = getTopic($idNum, $dbhandle);
     $description = getDescription($idNum, $dbhandle);
+    $time = NULL;
+    $timeSince = 0;
     
     /*
      $idNum = $_SESSION['id'];
@@ -86,60 +106,48 @@
     <ol id="update" class="timeline">
     <?php
     $result = $dbhandle -> query("SELECT Post FROM Posts" . $idNum . ";");
-    while($row=$result->fetchArray())
-    {
-        $post=$row['Post'];
-    ?>
-        <li class="box">
-        <?php echo $post; ?></li>
-        <?php
-        }
-        ?>
-        </ol>
-    <div id="flash"></div>
-    <div >
-    
-    <form action="#" method="post">
-    <textarea id="comment"></textarea><br />
-    <input type="submit" class="submit" value=" Submit Comment " />
-    </form>
-    </div>
 
-    <script type="text/javascript" src="jquery.js"></script>
-    <script type="text/javascript" >
-        $(function() {
-          function redirect() {
-            //window.location = "results.php"
-          alert("Comment");
-          }
-          var timer = setTimeout("redirect()", 20000);
-          $(".submit").click(function()
-                     {
-                     var comment = $("#comment").val();
-                     var dataString = 'comment=' + comment;
-                     if(comment=='')
-                     {
-                        alert('Please Give Valid Details');
-                     }
-                     else
-                     {
-                     $("#flash").show();
-                     $.ajax({
-                            type: "POST",
-                            url: "newpostajax.php",
-                            data: dataString,
-                            cache: false,
-                            success: function(html){
-                            $("ol#update").append(html);
-                            $("ol#update li:last").fadeIn("slow");
-                            $("#flash").hide();
-                            }
-                            });
-                     }return false;
-                //clearTimeout(timer);
-                //timer = setTimeout('redirect()', 20000);
-        }); });
-    </script>
+    function refresh() {
+        while($row=$result->fetchArray())
+        {
+            $post=$row['Post'];
+    ?>
+            <li class="box">
+            <?php echo $post; ?></li>
+            <?php
+        }
+            ?>
+            </ol>
+        <?php if (($time != NULL) || ($timeSince <= 20)) { ?>
+            <script type="text/javascript" src="jquery.js"></script>
+            <script type="text/javascript" >
+            setTimeout(function() { <?php refresh(); ?> }, 1000);
+            </script>
+        <?php }
+    } ?>
+
+    <div id="flash"></div>
+    <div id="startButton"></div>
+<?php
+    if (($time != NULL) && ($timeSince <= 20)) {
+        echo "<div >";
+
+        echo "<form action=\"#\" method=\"post\">";
+        echo "<textarea id=\"comment\"></textarea><br />";
+        echo "<input type=\"submit\" class=\"submit\" value=\" Submit Comment \" />";
+        echo "</form>";
+        echo "</div>";
+        
+        echo '<script type="text/javascript" src="jquery.js"></script>        <script type="text/javascript" >        $(function() {        function redirect() {            alert("Comment");        }        var timer = setTimeout("redirect()", 20000);        $(".submit").click(function()                           {                           var comment = $("#comment").val();                           var dataString = \'comment=\' + comment;                           if(comment==\'\')                           {                           alert(\'Please Give Valid Details\');                           }                           else                           {                           $("#flash").show();                           $.ajax({                                  type: "POST",                                  url: "newpostajax.php",                                  data: dataString,                                  cache: false,                                  success: function(html){                                  $("ol#update").append(html);                                  $("ol#update li:last").fadeIn("slow");                                  $("#flash").hide();                                  }                                  });                           }return false;                           }); });    </script>';
+        
+    } elseif ($time == NULL) { ?>
+        //echo "<button onclick=\"startTime()\">Start Session</button>";
+        <script type="text/javascript" src="jquery.js"></script>
+        <script type="text/javascript" >
+            $("startButton").append('<input type="button" value="Start Session">').button().click(function(){<?php startTime($id, $dbhandle, $time); ?>});
+        </script>
+<?php    }
+?>
 
     </body>
 </html>
