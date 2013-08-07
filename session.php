@@ -47,7 +47,6 @@
     $topic = getTopic($idNum, $dbhandle);
     $description = getDescription($idNum, $dbhandle);
     $time = 0;
-    $timeSince = 0;
     
     /*
      $idNum = $_SESSION['id'];
@@ -96,9 +95,6 @@
 function currentTime() {
     return <?= $time ?>;
 }
-function timeElapsed() {
-    return <?= $timeSince ?>;
-}
 </script>
 
 
@@ -111,24 +107,23 @@ function timeElapsed() {
         <h2 align="center"><?=$description?></h2>
 
         <ol id="update" class="timeline"></ol>
-
-        <script type="text/javascript" src="jquery.js"></script>
-        <script type="text/javascript" >
-            function refresh(){
-                $("ol#update").load("posts.php", function(){
-                        setTimeout(refresh(), 1000);
-                });
-            }
-            $(document).ready(function(){refresh()});
-        </script>
-
         <div id="flash"></div>
         <div id="startButton"></div>
         <div id="form"></div>
 
         <script type="text/javascript" src="jquery.js"></script>
         <script type="text/javascript" >
-            if ((currentTime() != 0) && (timeElapsed() <= 20)) {
+            if (currentTime() == 0) {
+                setTimeout(function() { $("#form").remove(); }, 20000);
+                /*$("#form").delay(20000).fadeOut();
+                function refresh(){
+                    $("ol#update").load("posts.php", function(){
+                                        setTimeout(refresh(), 1000);
+                                        });
+                }
+                $(document).ready(function(){refresh()});*/
+                
+                
                 $("#form").append("<form action=\"#\" method=\"post\">                                  <textarea id=\"comment\"></textarea><br />                                  <input type=\"submit\" class=\"submit\" value=\" Submit Comment \" />                                  </form>");
 
             $(function() {
@@ -163,7 +158,7 @@ function timeElapsed() {
                          //timer = setTimeout('redirect()', 20000);
                          }); });
     
-            } else if (currentTime() == 0) {
+            } else if (currentTime() != 0) {
                 
                 $("#startButton").append("<form action=\"#\" method=\"post\"><input type=\"submit\" class=\"submit\" value=\" Start Session \" /></form>");
                 $(function() {
