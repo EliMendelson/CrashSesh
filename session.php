@@ -115,13 +115,13 @@ function currentTime() {
         <script type="text/javascript" >
             if (currentTime() == 0) {
                 setTimeout(function() { $("#form").remove(); }, 20000);
-                /*$("#form").delay(20000).fadeOut();
+                //$("#form").delay(20000).fadeOut();
                 function refresh(){
                     $("ol#update").load("posts.php", function(){
                                         setTimeout(refresh(), 1000);
                                         });
                 }
-                $(document).ready(function(){refresh()});*/
+                $(document).ready(function(){refresh()});
                 
                 
                 $("#form").append("<form action=\"#\" method=\"post\">                                  <textarea id=\"comment\"></textarea><br />                                  <input type=\"submit\" class=\"submit\" value=\" Submit Comment \" />                                  </form>");
