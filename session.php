@@ -97,7 +97,7 @@
         ?>
         </ol>
     <div id="flash"></div>
-    <div >
+    <div id="form">
     
     <form action="#" method="post">
     <textarea id="comment"></textarea><br />
