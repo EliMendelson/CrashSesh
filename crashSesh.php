@@ -8,7 +8,7 @@
         <div class="container">
             <div align="center">
                 <h1>Welcome to Crash Sesh.</h1>
-                <p>  Would you like to <a href="/createSesh.php">create a new Sesh?</a></p>
+                <p>  Would you like to <a href="/createSesh.php">create a new session?</a></p>
             </div>
         </div>
 	</body>

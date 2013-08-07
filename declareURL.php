@@ -1,7 +1,7 @@
 <?php
     
-    error_reporting(E_ALL);
-    ini_set('display_errors', '1');
+    //error_reporting(E_ALL);
+    //ini_set('display_errors', '1');
     
     session_start();
     foreach ($_POST AS $key => $val){
@@ -101,23 +101,22 @@
     $id = numClicks($dbhandle);
     sqlGen($id, $topic, $description, $dbhandle);
     $page = pgName($id);
-    
-    echo "<title>URL For " . $topic . "</title>";
-    echo "</head>";
-    echo "<body>";
-    
-    echo "<table width=\"300\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"1\" bgcolor=\"#333333\" style=\"position:relative;vertical-align:middle;top:100px;\">";
-    echo "<td><td colspan=\"3\"><strong><font color=\"ED921B\" face=\"Trebuchet MS, Tahoma, Verdana, Arial, sans-serif\">Session Info</font></strong></td></tr>";
-    echo "<tr><td width=\"200\"><font color=\"ED921B\" face=\"Trebuchet MS, Tahoma, Verdana, Arial, sans-serif\">Topic</font></td>";
-    echo "<td width=\"6\"><font color=\"ED921B\">:</font></td>";
-    echo "<td width=\"200\"><font color=\"ED921B\" face=\"Trebuchet MS, Tahoma, Verdana, Arial, sans-serif\">" . $topic . "</font></td></tr>";
-    echo "<tr><td width=\"200\"><font color=\"ED921B\" face=\"Trebuchet MS, Tahoma, Verdana, Arial, sans-serif\">Description</font></td>";
-    echo "<td width=\"6\"><font color=\"ED921B\">:</font></td>";
-    echo "<td width=\"200\"><font color=\"ED921B\" face=\"Trebuchet MS, Tahoma, Verdana, Arial, sans-serif\">" . $description . "</font></td></tr>";
-    echo "<tr><td width=\"200\"><font color=\"ED921B\" face=\"Trebuchet MS, Tahoma, Verdana, Arial, sans-serif\">Session URL</font></td>";
-    echo "<td width=\"6\"><font color=\"ED921B\">:</font></td>";
-    echo "<td width=\"200\"><font color=\"ED921B\" face=\"Trebuchet MS, Tahoma, Verdana, Arial, sans-serif\"><a href=\"" . $page . "\">" . $page . "</a></font></td></tr>";
-    echo "</table>";
-    echo "</body>";
-echo "</html>";
 ?>
+    <title>URL For <?=$topic?></title>
+    </head>
+    <body>
+    
+        <table width="300" border="0" align="center" cellpadding="0" cellspacing="1" bgcolor="#efa351" style="position:relative;vertical-align:middle;top:100px;">
+            <tr><td colspan="3" style="font-size: 24px;"><strong><font color="FFFFFF" face="Trebuchet MS, Tahoma, Verdana, Arial, sans-serif">Session Info</font></strong></td></tr>
+            <tr><td width="200"><font color="FFFFFF" face="Trebuchet MS, Tahoma, Verdana, Arial, sans-serif">Topic</font></td>
+            <td width="6"><font color="FFFFFF">:</font></td>
+            <td width="200"><font color="FFFFFF" face="Trebuchet MS, Tahoma, Verdana, Arial, sans-serif"><?=$topic?> </font></td></tr>
+            <tr><td width="200"><font color="FFFFFF" face="Trebuchet MS, Tahoma, Verdana, Arial, sans-serif">Description</font></td>
+            <td width="6"><font color="FFFFFF">:</font></td>
+            <td width="200"><font color="FFFFFF" face="Trebuchet MS, Tahoma, Verdana, Arial, sans-serif"><?=$description?></font></td></tr>
+            <tr><td width="200"><font color="FFFFFF" face="Trebuchet MS, Tahoma, Verdana, Arial, sans-serif">Session URL</font></td>
+            <td width="6"><font color="FFFFFF">:</font></td>
+            <td width="200"><font color="FFFFFF" face="Trebuchet MS, Tahoma, Verdana, Arial, sans-serif"><a href=<?=$page?>><?=$page?></a></font></td></tr>
+    </table>
+    </body>
+</html>

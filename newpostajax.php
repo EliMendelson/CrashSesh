@@ -16,6 +16,7 @@
     
 ?>
 
-<li class="box">
+<li class="box" align="center" style="color: #FFFFFF; font-size: 18px;"><font face="Trebuchet MS, Tahoma, Verdana, Arial, sans-serif">
     <?php echo $comment; ?>
-</li>
+</font></li>
+<li><br \></li>

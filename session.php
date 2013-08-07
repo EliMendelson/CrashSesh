@@ -1,7 +1,7 @@
 <?php
 
-    error_reporting(E_ALL);
-    ini_set('display_errors', '1');
+    //error_reporting(E_ALL);
+    //ini_set('display_errors', '1');
     
     session_start();
     foreach ($_GET AS $key => $val){
@@ -83,21 +83,22 @@
         <h1 align="center"><?=$topic?></h1>
         <h2 align="center"><?=$description?></h2>
 
-    <ol id="update" class="timeline">
+    <ol id="update" class="timeline" align="center" style="list-style-type: none; background-color: #73be95;">
     <?php
     $result = $dbhandle -> query("SELECT Post FROM Posts" . $idNum . ";");
     while($row=$result->fetchArray())
     {
         $post=$row['Post'];
     ?>
-        <li class="box">
-        <?php echo $post; ?></li>
+        <li class="box" style="color: #FFFFFF; font-size: 18px;"><font face="Trebuchet MS, Tahoma, Verdana, Arial, sans-serif">
+        <?php echo $post; ?></font></li>
+        <li><br \></li>
         <?php
         }
         ?>
         </ol>
     <div id="flash"></div>
-    <div id="form">
+    <div id="form" align="center">
     
     <form action="#" method="post">
     <textarea id="comment"></textarea><br />
@@ -113,8 +114,8 @@
           //alert("Comment");
           //}
           //var timer = setTimeout("redirect()", 20000);
-          
-          setTimeout(function() { $("#form").remove(); }, 20000);
+          var topic = <?php echo json_encode($topic); ?>;
+          var timer = setTimeout(function() { $("#form").remove(); alert("Thank you for participating in the " + topic + " session."); }, 20000);
           //$("#form").delay(20000).fadeOut();
           
           $(".submit").click(function()
@@ -139,9 +140,10 @@
                             $("#flash").hide();
                             }
                             });
+                     clearTimeout(timer);
+                     timer = setTimeout(function() { $("#form").remove(); alert("Thank you for participating in the " + topic + " session."); }, 20000);
                      }return false;
-                //clearTimeout(timer);
-                //timer = setTimeout('redirect()', 20000);
+                
         }); });
     </script>
 
