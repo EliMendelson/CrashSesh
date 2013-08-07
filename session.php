@@ -108,11 +108,12 @@
     <script type="text/javascript" src="jquery.js"></script>
     <script type="text/javascript" >
         $(function() {
-          function redirect() {
+          
+          //function redirect() {
             //window.location = "results.php"
-          alert("Comment");
-          }
-          var timer = setTimeout("redirect()", 20000);
+          //alert("Comment");
+          //}
+          //var timer = setTimeout("redirect()", 20000);
           $(".submit").click(function()
                      {
                      var comment = $("#comment").val();
