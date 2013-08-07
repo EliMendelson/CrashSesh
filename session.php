@@ -39,11 +39,6 @@
         return $time;
     }
     
-    function setTime($id, $dbhandle) {
-        $setTime = "INSERT INTO TimeLeft(Id, Time) VALUES (\"" . $id . "\", " . time() . ");";
-        $dbhandle -> exec($setTime);
-    }
-    
     function timeDiff($time) {
         $timeDiff = time() - $time;
         return $timeDiff;
@@ -124,28 +119,18 @@ function timeElapsed() {
                         setTimeout(refresh(), 1000);
                 });
             }
-            if ((currentTime() != 0) && (timeElapsed() <= 20)) {
-                $(document).ready(function(){refresh()});
-            }
+            $(document).ready(function(){refresh()});
         </script>
 
         <div id="flash"></div>
         <div id="startButton"></div>
+        <div id="form"></div>
 
         <script type="text/javascript" src="jquery.js"></script>
         <script type="text/javascript" >
             if ((currentTime() != 0) && (timeElapsed() <= 20)) {
-        </script>
-        <div >
-    
-            <form action="#" method="post">
-                <textarea id="comment"></textarea><br />
-                <input type="submit" class="submit" value=" Submit Comment " />
-            </form>
-        </div>
-    
-        <script type="text/javascript" src="jquery.js"></script>
-        <script type="text/javascript" >
+                $("#form").append("<form action=\"#\" method=\"post\">                                  <textarea id=\"comment\"></textarea><br />                                  <input type=\"submit\" class=\"submit\" value=\" Submit Comment \" />                                  </form>");
+
             $(function() {
               function redirect() {
                 alert("Comment");
@@ -178,10 +163,21 @@ function timeElapsed() {
                          //timer = setTimeout('redirect()', 20000);
                          }); });
     
-            } elseif (currentTime() == 0) {
+            } else if (currentTime() == 0) {
                 
-                $("#startButton").append('<input type="button" value="Start Session">').button().click(function(){<?php setTime($idNum, $dbhandle); ?>});
-                <?php $time = getTime($idNum, $dbhandle); ?>
+                $("#startButton").append("<form action=\"#\" method=\"post\"><input type=\"submit\" class=\"submit\" value=\" Start Session \" /></form>");
+                $(function() {
+                  $(".submit").click(function()
+                        {
+                            $.ajax({
+                                url: "setTime.php",
+                                success: function(html){
+                                   $("#startButton").hide();
+                                }
+                            });
+                        });
+                });
+                
             }
         </script>
 
